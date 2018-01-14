@@ -15,7 +15,7 @@ public class HystrixTimeoutService {
     private static final String MESSAGE = "Ok";
     private static final String FALLBACK_MESSAGE = "Fallback message";
     private static final String HYSTRIX_TIMEOUT = "1000";
-    private static final int FAILURE_THREAD_SLEEP = 3000;
+    private static final int SLOW_OPERATION_THREAD_SLEEP = 3000;
 
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = HYSTRIX_TIMEOUT)}
@@ -50,7 +50,7 @@ public class HystrixTimeoutService {
     }
 
     private void tooSlowOperation() throws InterruptedException {
-        Thread.sleep(FAILURE_THREAD_SLEEP);
+        Thread.sleep(SLOW_OPERATION_THREAD_SLEEP);
         log.warn("This will never happen when our Hystrix timeout is lower than thread sleep. Hystrix will (by default) abort this thread on timeout");
         throw new RuntimeException("failure was triggered");
     }
