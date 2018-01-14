@@ -33,7 +33,7 @@ public class HystrixExceptionService {
      *      Returns message when everything is OK
      *      Returns HystrixBadRequestException upon failure
      * Circuit breaker open:
-     *      never occurs. The circuit never opens because the only type of exception we throw is ignored by hystrix
+     *      never occurs. The circuit never opens because the only type of exception we throw is ignored by Hystrix
      */
     @HystrixCommand(fallbackMethod = "fallback")
     public String randomlyTriggerHystrixBadRequestException() {
@@ -42,6 +42,7 @@ public class HystrixExceptionService {
     }
 
     public String fallback() {
+        log.warn("This will never happen when we throw an exception that is ignored, or we throw HystrixBadRequestException");
         return FALLBACK_MESSAGE;
     }
 
@@ -50,14 +51,14 @@ public class HystrixExceptionService {
     }
 
     private void randomlyThrowIllegalArgumentException() {
-        if (Math.random() > 0.6) {
+        if (Math.random() > 0.4) {
             log.warn("IllegalArgumentException is being triggered");
             throw new IllegalArgumentException("some illegal argument error");
         }
     }
 
     private void randomlyThrowHystrixBadRequestException() {
-        if (Math.random() > 0.6) {
+        if (Math.random() > 0.4) {
             log.warn("HystrixBadRequestException is being triggered");
             throw new HystrixBadRequestException("some bad request error");
         }

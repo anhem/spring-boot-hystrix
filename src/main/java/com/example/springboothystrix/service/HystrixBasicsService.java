@@ -65,7 +65,7 @@ public class HystrixBasicsService {
     }
 
     private void randomlyThrowException() {
-        if (Math.random() > 0.6) {
+        if (Math.random() > 0.4) {
             log.warn("failure is being triggered");
             throw new RuntimeException("failure was triggered");
         }
