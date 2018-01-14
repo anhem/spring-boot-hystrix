@@ -35,9 +35,10 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(value = HystrixRuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public HystrixErrorResponse handleHystrixRuntimeException(HystrixRuntimeException e, WebRequest webRequest) {
         log.error("HystrixRuntimeException on request: {}", webRequest, e);
-        return new HystrixErrorResponse(e.getMessage(), getStacktrace(e), HttpStatus.BAD_REQUEST.value(), e.getFailureType(), e.getFallbackException().getMessage());
+        return new HystrixErrorResponse(e.getMessage(), getStacktrace(e), HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getFailureType(), e.getFallbackException().getMessage());
     }
 
     @ExceptionHandler(value = RuntimeException.class)
