@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class HystrixFallbackChainService {
 
+    /**
+     * value from lastMethod will be returned
+     */
     @HystrixCommand(fallbackMethod = "secondMethod")
     public String firstMethod() {
         throw new RuntimeException("firstMethod failed");
