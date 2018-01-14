@@ -17,6 +17,10 @@ public class HystrixTimeoutService {
     private static final String HYSTRIX_TIMEOUT = "1000";
     private static final int SLOW_OPERATION_THREAD_SLEEP = 3000;
 
+    /**
+     * Returns HystrixRuntimeException upon failure with the message:
+     * alwaysTimeout timed-out and fallback failed..
+     */
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = HYSTRIX_TIMEOUT)}
     )
@@ -25,6 +29,9 @@ public class HystrixTimeoutService {
         return MESSAGE;
     }
 
+    /**
+     * Returns fallback message
+     */
     @HystrixCommand(fallbackMethod = "alwaysTimeoutFallback",
             commandProperties = {
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = HYSTRIX_TIMEOUT)})
@@ -33,6 +40,11 @@ public class HystrixTimeoutService {
         return MESSAGE;
     }
 
+    /**
+     * Returns HystrixRuntimeException containing a MyFallbackException that can contain whatever information we want to send back to the client
+     * This will however cause an error message to be logged:
+     * c.n.h.c.javanica.command.GenericCommand  : failed to process fallback is the method: 'randomTriggerFallbackException'.
+     */
     @HystrixCommand(fallbackMethod = "alwaysTimeoutFallbackException",
             commandProperties = {
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = HYSTRIX_TIMEOUT)})

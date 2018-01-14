@@ -20,6 +20,13 @@ public class ControllerAdvice {
 
     private static final Logger log = LoggerFactory.getLogger(ControllerAdvice.class);
 
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgumentException(IllegalArgumentException e, WebRequest webRequest) {
+        log.warn("MyFallbackException on request: {}", webRequest, e);
+        return new ErrorResponse(e.getMessage(), getStacktrace(e), HttpStatus.BAD_REQUEST.value());
+    }
+
     @ExceptionHandler(value = MyFallbackException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMyFallbackException(MyFallbackException e, WebRequest webRequest) {
